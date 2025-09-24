@@ -20,19 +20,34 @@ export default function ContactPage() {
 
   const [messageSent, setMessageSent] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
 
-    const subject = encodeURIComponent(`Message from ${formData.name}`)
-    const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)
-    const mailtoLink = `mailto:julita'scuisinejc@gmail.com?subject=${subject}&body=${body}`
+    try {
+      const response = await fetch("/api/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
 
-    window.location.href = mailtoLink
-
-    setMessageSent(true)
-    setFormData({ name: "", email: "", message: "" })
-
-    setTimeout(() => setMessageSent(false), 5000)
+      if (response.ok) {
+        setMessageSent(true)
+        setFormData({ name: "", email: "", message: "" })
+        setTimeout(() => setMessageSent(false), 5000)
+      } else {
+        // Handle error
+        console.error("Failed to send message")
+      }
+    } catch (error) {
+      console.error("An error occurred:", error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -192,8 +207,12 @@ export default function ContactPage() {
                       className="bg-input border-border"
                     />
                   </div>
-                  <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-                    Send Message
+                  <Button
+                    type="submit"
+                    className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? "Sending..." : "Send Message"}
                   </Button>
                 </form>
               </CardContent>
@@ -201,18 +220,22 @@ export default function ContactPage() {
 
             {/* Map and Hours */}
             <div className="space-y-6">
-              {/* Map Placeholder */}
+              {/* Google Maps Embed */}
               <Card className="bg-card border-border">
                 <CardHeader>
                   <CardTitle className="text-xl font-serif text-accent">Find Us</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="w-full h-64 bg-muted rounded-lg flex items-center justify-center">
-                    <div className="text-center">
-                      <MapPin className="w-12 h-12 text-primary mx-auto mb-2" />
-                      <p className="text-muted-foreground">Mpererwe–Gayaza Road</p>
-                      <p className="text-sm text-muted-foreground mt-2">Interactive map coming soon</p>
-                    </div>
+                  <div className="w-full h-64 bg-muted rounded-lg overflow-hidden">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.757631539343!2d32.57609631475948!3d0.3220479997424428!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x177dbb863814ac8d%3A0x746f3b4845b85d6c!2sMpererwe%2C%20Kampala%2C%20Uganda!5e0!3m2!1sen!2sus!4v1678886400000!5m2!1sen!2sus"
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    ></iframe>
                   </div>
                 </CardContent>
               </Card>
@@ -243,6 +266,53 @@ export default function ContactPage() {
                 </CardContent>
               </Card>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Social Links */}
+      <section className="py-16 text-center">
+        <div className="container mx-auto px-4">
+          <h2 className="font-serif text-2xl font-bold text-accent mb-6">Follow Us</h2>
+          <div className="flex justify-center space-x-6">
+            <a
+              href="https://www.facebook.com/JulitasCuisine"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gold-400 hover:text-gold-300 transition-colors"
+            >
+              <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fillRule="evenodd"
+                  d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </a>
+            <a
+              href="https://www.instagram.com/JulitasCuisine"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gold-400 hover:text-gold-300 transition-colors"
+            >
+              <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fillRule="evenodd"
+                  d="M12.315 2c2.43 0 2.718.01 3.702.054 1.022.048 1.73.213 2.36.465.65.265 1.17.625 1.695 1.15.525.525.885 1.045 1.15 1.695.252.63.417 1.338.465 2.36C21.99 8.282 22 8.57 22 11s-.01 2.718-.054 3.702c-.048 1.022-.213 1.73-.465 2.36-.265.65-.625 1.17-1.15 1.695-.525.525-1.045.885-1.695 1.15-.63.252-1.338.417-2.36.465C15.032 21.99 14.745 22 12 22s-2.718-.01-3.702-.054c-1.022-.048-1.73-.213-2.36-.465-.65-.265-1.17-.625-1.695-1.15-.525-.525-.885-1.045-1.15-1.695-.252-.63-.417-1.338-.465-2.36C2.01 13.718 2 13.43 2 11s.01-2.718.054-3.702c.048-1.022.213-1.73.465-2.36.265-.65.625-1.17 1.15-1.695.525-.525 1.045-.885 1.695-1.15.63-.252 1.338-.417 2.36-.465C8.282 2.01 8.57 2 11 2h1.315zM11 5.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zm0 2a3.5 3.5 0 100 7 3.5 3.5 0 000-7z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </a>
+            <a
+              href="https://www.tiktok.com/@JulitasCuisine"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gold-400 hover:text-gold-300 transition-colors"
+            >
+              <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-2.43.05-4.84-.95-6.43-2.8-1.59-1.85-2.33-4.35-2.22-6.87.09-2.5.99-4.9 2.24-6.81 1.25-1.91 3.28-3.26 5.48-3.55.01 2.56-.01 5.12.01 7.68.02 1.43-.63 2.79-1.75 3.66-1.12.87-2.66 1.05-3.97.46-.35-.16-.68-.38-.97-.62-.29-.24-.54-.53-.74-.84-.19-.31-.34-.66-.46-1.02s-.18-.73-.18-1.11c.01-1.4.59-2.77 1.7-3.66 1.11-.89 2.66-1.08 3.97-.52.35.16.68.38.97.62.29.24.54.53.74.84.19.31.34.66.46-1.02.12-.36.18-.73.18-1.11.01-2.56.01-5.12.01-7.68z" />
+              </svg>
+            </a>
           </div>
         </div>
       </section>

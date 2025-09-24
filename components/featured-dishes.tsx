@@ -83,25 +83,30 @@ export function FeaturedDishes() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {dishes.map((dish, index) => (
-            <Card
+            <a
               key={index}
-              className="bg-card border-border overflow-hidden group hover:border-accent/50 transition-all duration-300"
+              href={`https://wa.me/256703667896?text=I'd like to order the ${dish.name}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group"
             >
-              <div className="relative overflow-hidden">
-                <div
-                  className="w-full h-48 bg-cover bg-center group-hover:scale-105 transition-transform duration-300"
-                  style={{ backgroundImage: `url('${dish.image}')` }}
-                />
-                <Badge className="absolute top-4 left-4 bg-primary text-primary-foreground">{dish.category}</Badge>
-              </div>
-              <CardContent className="p-6">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="font-serif text-xl font-semibold text-accent">{dish.name}</h3>
-                  <span className="text-primary font-bold">{dish.price}</span>
+              <Card className="bg-card border-border overflow-hidden h-full hover:border-accent/50 hover:shadow-lg hover:shadow-accent/10 transition-all duration-300">
+                <div className="relative overflow-hidden">
+                  <div
+                    className="w-full h-48 bg-cover bg-center group-hover:scale-105 transition-transform duration-300"
+                    style={{ backgroundImage: `url('${dish.image}')` }}
+                  />
+                  <Badge className="absolute top-4 left-4 bg-primary text-primary-foreground">{dish.category}</Badge>
                 </div>
-                <p className="text-muted-foreground text-sm">{dish.description}</p>
-              </CardContent>
-            </Card>
+                <CardContent className="p-6">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-serif text-xl font-semibold text-accent">{dish.name}</h3>
+                    <span className="text-primary font-bold">{dish.price}</span>
+                  </div>
+                  <p className="text-muted-foreground text-sm">{dish.description}</p>
+                </CardContent>
+              </Card>
+            </a>
           ))}
         </div>
       </div>
