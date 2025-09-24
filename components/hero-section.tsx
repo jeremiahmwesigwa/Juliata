@@ -31,10 +31,8 @@ export function HeroSection() {
 
           {/* Main Heading */}
           <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-balance">
-            <span className="text-foreground">Taste the </span>
-            <span className="text-accent">Flavor</span>
-            <span className="text-foreground">, Feel the </span>
-            <span className="text-primary">Love</span>
+            <span className="text-foreground">Taste the Flavor, Feel the Love — </span>
+            <span className="text-accent">Julita’s Cuisine</span>
           </h1>
 
           {/* Subtitle */}
@@ -45,9 +43,9 @@ export function HeroSection() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-8">
+            <Button asChild size="lg" className="bg-[#f97316] text-white hover:bg-[#f97316]/90 text-lg px-8">
               <Link href="/menu">
-                See Our Menu
+                See Menu
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
             </Button>
@@ -55,9 +53,11 @@ export function HeroSection() {
               asChild
               variant="outline"
               size="lg"
-              className="border-accent text-accent hover:bg-accent hover:text-accent-foreground text-lg px-8 bg-transparent"
+              className="border-[#facc15] text-[#facc15] hover:bg-[#facc15] hover:text-black text-lg px-8 bg-transparent"
             >
-              <Link href="/contact">Contact Us</Link>
+              <a href="https://wa.me/256703667896" target="_blank" rel="noopener noreferrer">
+                Contact Us
+              </a>
             </Button>
           </div>
 

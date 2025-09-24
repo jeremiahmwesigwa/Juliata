@@ -30,7 +30,7 @@ export function ServicesSection() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4 text-balance">
-            Our <span className="text-accent">Premium</span> Services
+            Our <span className="text-accent">Services</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-pretty">
             From intimate gatherings to grand celebrations, we provide exceptional catering services tailored to your
